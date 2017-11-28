@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Register</title>
+  <link  rel="stylesheet"  th:href="@{/css/bootstrap.min.css}" />
+  <link  rel="stylesheet" th:href="@{/css/icheck/icheck_all.css}">
+  <link  rel="stylesheet"  th:href="@{/css/user.css}" />
+</head>
+
+<body>
+
+      <div>
+        <form method="post" th:action="@{/register}">
+          <div>
+  
+            <input  class="login_field" id="account" name="account" th:data-url="@{/register/account/detect}"  type="text" placeholder="输入手机或邮箱">
+            <span class="help-block" data-error="account"></span>
+          </div>
+          <div>
+
+            <input  class="login_field" id="npassword" name="npassword" type="password" placeholder="输入6至16位密码">
+            <span class="help-block" data-error="npassword"></span>
+          </div>
+          <div>
+
+            <input  class="login_field" id="cpassword" name="cpassword" type="password" placeholder="确认密码">
+            <span class="help-block" data-error="cpassword"></span>
+          </div>
+          
+          <div class="po-re">
+            <div>
+
+              <input  class="login_field" id="regCode" name="vcode" type="vcode" placeholder="输入验证码">
+              <span class="help-block" data-error="vcode"></span>
+              <button  id="getVerifyBtn" type="button" th:data-url="@{/register/vcode/send}" >获取验证码</button>
+            </div>
+          </div>
+          
+          <div>
+            <label>
+              <input name="agree" type="checkbox" id="agree" value="yes"> 同意服务条款
+              <span class="help-block inline" data-error="agree"></span>
+            </label>
+          </div>
+          <button type="button" id="btn_register"  name="submit">确定注册</button>
+        </form>
+      </div>
+      <div>
+        <span>已有账号？<a href="login.html" th:href="@{/login}" class="signup-link">直接登录</a></span>
+        <a th:href="@{/forget}" href="forget.html" class="forgets-password doo">忘记密码?</a>
+      </div> 
+
+
+<script  th:src="@{/js/jquery-1.11.3.min.js}"></script> 
+<script  th:src="@{/js/bootstrap.min.js}"></script>
+<link rel="stylesheet" th:href="@{/js/messenger/css/messenger.css}">
+<link rel="stylesheet" th:href="@{/js/messenger/css/messenger-theme-flat.css}">
+<script  th:src="@{/js/messenger/js/messenger.min.js}"></script>
+<script  th:src="@{/js/messenger/js/messenger-theme-flat.js}"></script>
+<script  th:src="@{/js/base.js}"></script>
+<script  th:src="@{/js/forget.js}"></script>
+<script>
+$(function() {
+  $("#btn_send").prop("disabled",true);
+  $("[data-error]").html("");
+  $("[name='account']").change(function(e) {
+        var url = $(this).data("url");
+        var account = $(this).val();
+    var name = "[data-error='account']";
+        $.post(url, {account:account}, function(json) {
+            if (json.result == "exist") {
+        $(name).html("账号被占用。");
+      } else if (json.result == "format_error") {
+        $(name).html("请输入邮箱或手机号。");
+      } else if (json.result == "email" || json.result == "mobile") {
+        $(name).html("可用。");
+        $("#btn_send").prop("disabled",false);
+      }
+        }, "json");
+    });
+  
+  $("#btn_send").click(function(e) {
+    var form = $(this).parents("form");
+    var url = $(this).data("url");
+    var account = form.find("[name='account']").val();
+    resetSend();
+        post(form, url, {account:account});
+    });
+  
+});
+</script>
+<script th:src="@{/js/icheck.min.js}"></script>
+</body>
+</html>

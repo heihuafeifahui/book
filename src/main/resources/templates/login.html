@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Login</title>
+  <link href="../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+  <link href="../static/css/user.css" rel="stylesheet" th:href="@{/css/user.css}" />
+  <link href="../static/css/base.css" rel="stylesheet" th:href="@{/css/base.css}" />
+</head>
+
+<body>
+    <div>
+        <form method="post" th:action="@{/login}">
+       	<div>
+        <input id="account" name="account" / tabindex="1" type="text" placeholder="账号">
+        <span class="help-block" data-error="account"></span>
+        </div>
+
+  		<div>
+        <input class="login_field" id="password" name="password" type="password" placeholder="密码">
+        <span class="help-block" data-error="password"></span> 
+        </div>
+            
+           
+        <div th:if="${session?.login_num>3}" class="po-re">
+        <div class="full-auth vericodes">
+        <input class="login_field" id="vcode" name="vcode"  type="vcode" placeholder="输入验证码">
+        <span class="help-block" data-error="vcode"></span>
+        <img id="vcodeImg" src="../static/images/vericode.jpg" th:src="@{/vericode.jpg}" onclick="refresh('/vericode.jpg')">
+        </div> 
+        </div>
+            
+        <div>    
+        <button type="button" name="submit">登录</button>
+        <input type="hidden" name="r" th:value="${r}" />
+        </form>
+        </div>
+        
+        
+        <div>
+        <span>没有账号? 
+        </div>
+        <div>  
+          <a href="register.html" th:href="@{/register}">即刻注册</a></span>
+        </div> 
+          <div>
+          <a th:href="@{/forget}" href="forget.html">忘记密码?</a>
+        </div> 
+  
+
+
+<script src="../static/js/jquery-1.11.3.min.js" th:src="@{/js/jquery-1.11.3.min.js}"></script> 
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<link rel="stylesheet" href="../static/js/messenger/css/messenger.css" th:href="@{/js/messenger/css/messenger.css}">
+<link rel="stylesheet" href="../static/js/messenger/css/messenger-theme-flat.css" th:href="@{/js/messenger/css/messenger-theme-flat.css}">
+<script src="../static/js/messenger/js/messenger.min.js" th:src="@{/js/messenger/js/messenger.min.js}"></script>
+<script src="../static/js/messenger/js/messenger-theme-flat.js" th:src="@{/js/messenger/js/messenger-theme-flat.js}"></script>
+<script src="../static/js/base.js" th:src="@{/js/base.js}"></script>
+<script>
+$(function() {
+	// 回车登录
+	$("body").keydown(function() {
+	  if (event.keyCode == "13") {//keyCode=13是回车键
+	    $("[name='submit']").click();
+	  }
+	}); 
+	
+	  refresh = function(url) {
+	   $("#vcodeImg").attr("src", "/reg_vericode.jpg?" + Math.random());
+	 };
+ 
+  
+});
+</script>
+</body>
+</html>
