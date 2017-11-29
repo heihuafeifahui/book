@@ -79,6 +79,7 @@ public class BaseDao<T> {
 		return ps;
 	}
 
+	//离线查询转在线
 	public List<T> findAllByCriteria(final DetachedCriteria detachedCriteria) {
 		Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
 		return criteria.list();

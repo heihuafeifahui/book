@@ -22,10 +22,11 @@ public class UserService {
 	@Autowired
 	private UserDao userDao;
 	
+	//查询用户id
 	public User findById(String id) {
 		return userDao.findById(id);
 	}
-	
+	//查询自己的id，与用户id
 	public User findById(String mid, String id) {
 		try {
 			return userDao.findById(mid, id);
@@ -34,7 +35,7 @@ public class UserService {
 		}
 	}
 
-	
+	///查询账号
 	public User findByAccount(String account) {
 		try {
 			User user=userDao.findByAccount(account);
@@ -43,10 +44,12 @@ public class UserService {
 			throw e;
 		}
 	
-}
+}	
+	//账号是否注册
 	public boolean accountIsExist(String account) {
 		try {
 			User user=userDao.findByAccount(account);
+	
 			if(null != user && StringUtils.isNotBlank(user.getId())) {
 				return true;
 				}
@@ -54,10 +57,8 @@ public class UserService {
 		}catch(Exception e) {
 			return false;
 		}
-		
-		
 	}
-	
+	//注册账号
 	public void register(HttpSession session,User user) {
 	try {	
 		User existUser=userDao.findByAccount(user.getAccount());
@@ -65,16 +66,17 @@ public class UserService {
 			throw new ServiceException("register","account.exist");
 		}
 		userDao.save(user);
+		//将sessionid转换为大写
 		String sessionid=session.getId().toLowerCase();
+		//通过session保存userid
 		session.setAttribute("user", user.getId());
+		
 		System.out.println("suser:updata_login_sessionuser:"+
-			user.getAccount()+sessionid
-				);
+			user.getAccount()+sessionid);
 	}catch (Exception e) {
 		throw e;
-	}
-	
-	}
+	}	
+}
 	public User login(HttpSession session, String account, String password, String vcode) {
 		String verifycode = (String) session.getAttribute("VerifyCode");
 		Integer login_count = (Integer) session.getAttribute("login_count");

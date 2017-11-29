@@ -11,6 +11,15 @@ public class ValidTool {
 		Matcher m = p.matcher(email);
 		return m.matches();
 	}
+	
+	public static boolean isordinary(String ordinary) {
+		String str="^[A-Za-z0-9]{6,16}$";
+		Pattern p=Pattern.compile(str);
+		Matcher m=p.matcher(ordinary);
+		return  m.matches();
+	}
+	
+	
 	/** 
      * 大陆号码或香港号码均可 
      */  
